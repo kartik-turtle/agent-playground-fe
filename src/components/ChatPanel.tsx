@@ -1,5 +1,4 @@
 import { useState, useRef, useEffect } from "react";
-import { Card } from "./ui/card";
 import { Textarea } from "./ui/textarea";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
@@ -30,28 +29,12 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "./ui/collapsible";
+import { useStore } from "../services/store";
+import { FileAttachment, Message } from "./ChatInterface";
 
-interface FileAttachment {
-  id: string;
-  name: string;
-  size: number;
-  type: string;
-  url: string;
-}
-
-interface Message {
-  id: string;
-  role: "user" | "assistant" | "system";
-  content: string;
-  timestamp: Date;
-  files?: FileAttachment[];
-  author?: string; // "user" for human messages, agent name for assistant messages
-}
 
 interface ChatPanelProps {
   version: string;
-  systemPrompt: string;
-  onSystemPromptChange: (prompt: string) => void;
   messages: Message[];
   onSendMessage: (
     content: string,
@@ -59,25 +42,24 @@ interface ChatPanelProps {
     isInternalNote?: boolean,
   ) => void;
   isLoading: boolean;
-  selectedTools: string[];
   isPromptEditable?: boolean;
   hideInput?: boolean; // New prop to hide the input section
 }
 
 export function ChatPanel({
   version,
-  systemPrompt,
-  onSystemPromptChange,
   messages,
   onSendMessage,
   isLoading,
-  selectedTools,
   isPromptEditable = true,
   hideInput = false, // Default to false for backwards compatibility
 }: ChatPanelProps) {
+
+  const {sessionData, selectedAgent, setPrompt, setUpdatePending} = useStore()
+
   const [inputValue, setInputValue] = useState("");
   const [isEditingPrompt, setIsEditingPrompt] = useState(false);
-  const [tempPrompt, setTempPrompt] = useState(systemPrompt);
+  const [tempPrompt, setTempPrompt] = useState("");
   const [isPromptExpanded, setIsPromptExpanded] =
     useState(false);
   const [showPromptDialog, setShowPromptDialog] =
@@ -88,6 +70,14 @@ export function ChatPanel({
   const [isInternalNote, setIsInternalNote] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  console.log(messages)
+
+  useEffect(() => {
+    if (sessionData && sessionData[selectedAgent]) {
+      setTempPrompt(sessionData[selectedAgent].prompt)
+    }
+  }, [sessionData])
 
   useEffect(() => {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -168,7 +158,8 @@ export function ChatPanel({
   };
 
   const handleSavePrompt = () => {
-    onSystemPromptChange(tempPrompt);
+    setUpdatePending(true)
+    setPrompt(selectedAgent, tempPrompt);
     setIsEditingPrompt(false);
   };
 
@@ -180,7 +171,7 @@ export function ChatPanel({
           <div className="flex items-center justify-between mb-3">
             <h3 className="text-zinc-900">{version}</h3>
             <Badge variant="secondary" className="bg-zinc-100 text-zinc-700 border-0">
-              {selectedTools.length} tools
+              {sessionData ? sessionData[selectedAgent]?.selectedTools.length : 0} tools
             </Badge>
           </div>
 
@@ -208,7 +199,7 @@ export function ChatPanel({
                           size="sm"
                           className="h-7 text-xs text-zinc-600 hover:text-zinc-900"
                           onClick={() => {
-                            setTempPrompt(systemPrompt);
+                            setTempPrompt(sessionData ? sessionData[selectedAgent]?.prompt : "");
                             setIsEditingPrompt(true);
                             setIsPromptExpanded(true);
                           }}
@@ -253,7 +244,7 @@ export function ChatPanel({
               {/* Compact Preview */}
               {!isPromptExpanded && !isEditingPrompt && (
                 <div className="text-xs text-zinc-600 bg-zinc-50 border border-zinc-200 rounded-lg p-3 line-clamp-2">
-                  {systemPrompt || "No system prompt set"}
+                  {(sessionData ? (isPromptEditable ? sessionData[selectedAgent]?.prompt: sessionData[selectedAgent]?.basePrompt) : "") || "No system prompt set"}
                 </div>
               )}
 
@@ -271,7 +262,7 @@ export function ChatPanel({
                 ) : (
                   <ScrollArea className="h-[200px] w-full">
                     <div className="text-xs text-zinc-600 bg-zinc-50 border border-zinc-200 rounded-lg p-3 whitespace-pre-wrap font-mono">
-                      {systemPrompt || "No system prompt set"}
+                      {(sessionData ? (isPromptEditable ? sessionData[selectedAgent]?.prompt: sessionData[selectedAgent]?.basePrompt) : "") || "No system prompt set"}
                     </div>
                   </ScrollArea>
                 )}
@@ -285,7 +276,7 @@ export function ChatPanel({
           open={showPromptDialog}
           onOpenChange={setShowPromptDialog}
         >
-          <DialogContent className="max-w-4xl max-h-[80vh]">
+          <DialogContent className="max-w-6xl-important max-h-[80vh]">
             <DialogHeader>
               <DialogTitle>
                 {version} - System Prompt
@@ -297,7 +288,7 @@ export function ChatPanel({
             </DialogHeader>
             <ScrollArea className="h-[60vh] w-full">
               <div className="text-sm text-zinc-700 bg-zinc-50 border rounded-md p-4 whitespace-pre-wrap font-mono">
-                {systemPrompt || "No system prompt set"}
+                {(sessionData ? (isPromptEditable ? sessionData[selectedAgent]?.prompt: sessionData[selectedAgent]?.basePrompt) : "") || "No system prompt set"}
               </div>
             </ScrollArea>
           </DialogContent>
@@ -427,7 +418,7 @@ export function ChatPanel({
                           : "text-zinc-400"
                       }`}
                     >
-                      {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                      {message.timestamp}
                     </div>
                   </div>
                 </div>

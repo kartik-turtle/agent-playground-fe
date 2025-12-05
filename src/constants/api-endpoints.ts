@@ -16,6 +16,7 @@ enum APIEndpoints {
     FETCH_CHAT_HISTORY = "/api/mintpro/helpcenter/v2/recentChat/messages/v2",
     UPDATE_THREAD_READ_STATUS = "/api/mintpro/helpcenter/v2/recentChat/update-read-status",
     UPLOAD_THREAD_FILE = "/api/mintpro/helpcenter/v2/file/upload",
+    DOWNLOAD_THREAD_FILE = "/api/mintpro/helpcenter/v2/file/download/v2",
     GET_AGENTS = "/api/agent-playground/agents",
     CREATE_SESSION = "/api/agent-playground/create_session",
     UPDATE_SESSION = "/api/agent-playground/update_session",

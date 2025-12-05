@@ -1,5 +1,4 @@
 import axios from "axios";
-import { getItemFromSessionStorage } from "./utils";
 import {APIMethod} from "../constants/api-endpoints"
 import { useStore } from "./store";
 
@@ -50,5 +49,29 @@ const apiService = async (method: APIMethod, base_url: string, url: string, data
     throw error;
   }
 };
+
+export async function fileDownload(url: string, filename: string, isBlobUrl = false) {
+  const link = document.createElement('a');
+  try {
+    if (!isBlobUrl) {
+      const response = await axios.get(url, {'headers': getAuthHeaders(), 'responseType': 'blob'});
+      if (response.status !== 200) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const blob = response.data
+      link.href = URL.createObjectURL(blob);
+    }
+    else {
+      link.href = url
+    }
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(link.href);
+  } catch (error) {
+    console.error("Download failed:", error);
+  }
+}
 
 export default apiService;

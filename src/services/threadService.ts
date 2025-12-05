@@ -75,20 +75,12 @@ const formatChatMessageWithFiles = async (message: any) => {
         'timestamp': message.sentTime,
     }
     if (message.messageType === "FILE") {
-        formatted['files'] = message.files.map(async (file: any) => {
-            const pdfstr = await fetch(file.file);
-            const blobFromFetch = await pdfstr.blob();
-            var blob = new Blob([blobFromFetch], {type: file.mimeType});
-            const blobUrl = URL.createObjectURL(blob);
-            const formattedFile = {
-            'id': file.id,
+        formatted['files'] = message.files.map((file: any) => ({
             'name': file.filename,
-            'size': file.size,
             'type': file.mimeType,
-            'url': blobUrl
-           }
-           return formattedFile
-        })
+            'size': file.size,
+            'id': file.id
+        }))
     }
     return formatted
 }

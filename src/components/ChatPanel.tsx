@@ -16,6 +16,7 @@ import {
   FileText,
   Image as ImageIcon,
   StickyNote,
+  Download,
 } from "lucide-react";
 import {
   Dialog,
@@ -31,6 +32,8 @@ import {
 } from "./ui/collapsible";
 import { useStore } from "../services/store";
 import { FileAttachment, Message } from "./ChatInterface";
+import { APIBase, APIEndpoints } from "../constants/api-endpoints";
+import { fileDownload } from "../services/apiService";
 
 
 interface ChatPanelProps {
@@ -162,6 +165,11 @@ export function ChatPanel({
     setPrompt(selectedAgent, tempPrompt);
     setIsEditingPrompt(false);
   };
+
+  const handleFileDownload = async (file: FileAttachment) => {
+    const url = file.url ? file.url : APIBase.MINTPRO + APIEndpoints.DOWNLOAD_THREAD_FILE + `?id=${file.id}&broker=turtlemint`
+    await fileDownload(url, file.name, file.url ? true: false)
+  }
 
   return (
     <div className="h-full flex flex-col bg-white">
@@ -366,23 +374,15 @@ export function ChatPanel({
                                     : "bg-zinc-200"
                               }`}
                             >
-                              {file.type.startsWith("image/") ? (
-                                <img
-                                  src={file.url}
-                                  alt={file.name}
-                                  className="h-16 w-16 object-cover rounded"
-                                />
-                              ) : (
-                                <div
-                                  className={
-                                    message.role === "user"
-                                      ? "text-blue-700"
-                                      : "text-zinc-700"
-                                  }
-                                >
-                                  {getFileIcon(file.type)}
-                                </div>
-                              )}
+                              <div
+                                className={
+                                  message.role === "user"
+                                    ? "text-blue-700"
+                                    : "text-zinc-700"
+                                }
+                              >
+                                {getFileIcon(file.type)}
+                              </div>
                               <div className="flex-1 min-w-0">
                                 <div className="text-xs truncate font-medium">
                                   {file.name}
@@ -397,6 +397,12 @@ export function ChatPanel({
                                   {formatFileSize(file.size)}
                                 </div>
                               </div>
+                              <button className="cursor-pointer" onClick={async (e) => {
+                                 e.preventDefault()
+                                 await handleFileDownload(file)
+                              }}>
+                                <Download className="h-4 w-4"/>
+                              </button>
                             </div>
                           ))}
                         </div>
@@ -451,17 +457,9 @@ export function ChatPanel({
                   key={file.id}
                   className="flex items-center gap-2 bg-zinc-100 rounded-md p-2 pr-1 max-w-[200px]"
                 >
-                  {file.type.startsWith("image/") ? (
-                    <img
-                      src={file.url}
-                      alt={file.name}
-                      className="h-10 w-10 object-cover rounded"
-                    />
-                  ) : (
-                    <div className="text-zinc-600">
-                      {getFileIcon(file.type)}
-                    </div>
-                  )}
+                  <div className="text-zinc-600">
+                    {getFileIcon(file.type)}
+                  </div>
                   <div className="flex-1 min-w-0">
                     <div className="text-xs truncate">
                       {file.name}

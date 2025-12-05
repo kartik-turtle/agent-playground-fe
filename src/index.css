@@ -1010,6 +1010,10 @@
     overflow: hidden;
   }
 
+  .overflow-scroll {
+    overflow: scroll;
+  }
+
   .overflow-auto {
     overflow: auto;
   }

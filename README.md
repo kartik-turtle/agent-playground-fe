@@ -9,3 +9,8 @@
 
   Run `npm run dev` to start the development server.
   
+
+
+  # TODO
+  - add loader support
+  - add background message support

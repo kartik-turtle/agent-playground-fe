@@ -24,16 +24,15 @@ const subscribe = () => {
                 const threadId = webSocketMessage.threadInfo.id
                 if (sessionData?.[selectedAgent].baseThreadId === threadId) {
                     const existingMsg = sessionData[selectedAgent].baseThreadChats?.find(message => message.id === newMsg.id)
-                    console.log(existingMsg)
                     if (!existingMsg) {
-                        console.log("received agent response for base thread")
+                        console.log("received agent response for base thread: ", existingMsg)
                         formatChatMessage(newMsg).then(formattedMsg => setNewBaseThreadChat(selectedAgent, formattedMsg))
                     }
                 }
                 if (sessionData?.[selectedAgent].threadId === threadId) {
                     const existingMsg = sessionData[selectedAgent].threadChats?.find(message => message.id === newMsg.id)
                     if (!existingMsg) {
-                        console.log("received agent response for thread")
+                        console.log("received agent response for thread: ", existingMsg)
                         formatChatMessage(newMsg).then(formattedMsg => setNewThreadChat(selectedAgent, formattedMsg))
                     }
                 }

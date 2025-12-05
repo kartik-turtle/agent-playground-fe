@@ -91,12 +91,12 @@ function ToolItem({ tool, children = [], selectedTools, onToolToggle, onEditTool
             id={generateToolId(tool.parent_id, tool.name)}
             checked={isChecked}
             onCheckedChange={handleToggle}
-            className="mt-0.5 border-zinc-300"
+            className="mt-0.5 border-zinc-300 cursor-pointer"
           />
           <div className="flex-1 min-w-0">
             <label
               htmlFor={tool.name}
-              className="cursor-pointer block"
+              className="block"
             >
               <div className="flex items-center gap-2 mb-0.5">
                 <span className="text-sm text-zinc-900 truncate">{tool.name}</span>
@@ -115,7 +115,7 @@ function ToolItem({ tool, children = [], selectedTools, onToolToggle, onEditTool
                   }}
                   variant="ghost"
                   size="sm"
-                  className="opacity-0 group-hover:opacity-100 transition-opacity h-5 w-5 p-0 flex-shrink-0"
+                  className="cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity h-5 w-5 p-0 flex-shrink-0"
                 >
                   <Pencil className="h-3.5 w-3.5 text-zinc-600" />
                 </Button>

@@ -91,15 +91,7 @@ export function SharedChatInput({ onSendMessage, isLoading }: SharedChatInputPro
               key={file.id}
               className="flex items-center gap-2 bg-zinc-50 border border-zinc-200 rounded-lg p-2 pr-1 max-w-[200px]"
             >
-              {file.type.startsWith("image/") ? (
-                <img
-                  src={file.url}
-                  alt={file.name}
-                  className="h-10 w-10 object-cover rounded"
-                />
-              ) : (
-                <div className="text-zinc-600">{getFileIcon(file.type)}</div>
-              )}
+              <div className="text-zinc-600">{getFileIcon(file.type)}</div>
               <div className="flex-1 min-w-0">
                 <div className="text-xs truncate font-medium">{file.name}</div>
                 <div className="text-xs text-zinc-500">{formatFileSize(file.size)}</div>

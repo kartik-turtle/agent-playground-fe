@@ -30,7 +30,7 @@ export default function SessionContext() {
                     value.tools.forEach((tool: any) => {
                         toolsDescription[tool.name] = tool.description
                     })
-                    setSessionData(agent, {'selectedTools': value.tools.filter((tool: any) => tool.is_active).map((tool: any) => tool.name), 'toolsDescription': toolsDescription, 'basePrompt': value.base_prompt, 'prompt': value.prompt, 'tools': value.base_tools, 'threadId': value.thread_id, 'baseThreadId': value.base_thread_id})
+                    setSessionData(agent, {'selectedTools': value.tools.filter((tool: any) => tool.is_active).map((tool: any) => tool.name), 'toolsDescription': toolsDescription, 'basePrompt': value.base_prompt, 'prompt': value.prompt, 'tools': value.base_tools, 'threadId': value.thread_id, 'baseThreadId': value.base_thread_id, 'loadingV1': false, 'loadingV2': false})
                     setUserProfile(data.user_profile)
                     setAgentProfile(data.agent_profile)
                     setPartnerId(data.partner_id)
@@ -60,7 +60,7 @@ export default function SessionContext() {
                         toolsDescription[tool.name] = tool.description
                     })
                     setSessionId(data.session_id)
-                    setSessionData(agent, {'selectedTools': value.tools.filter((tool: any) => tool.is_active).map((tool: any) => tool.name), 'toolsDescription': toolsDescription, 'basePrompt': value.base_prompt, 'prompt': value.prompt, 'tools': value.tools, 'threadId': value.thread_id, 'baseThreadId': value.base_thread_id})
+                    setSessionData(agent, {'selectedTools': value.tools.filter((tool: any) => tool.is_active).map((tool: any) => tool.name), 'toolsDescription': toolsDescription, 'basePrompt': value.base_prompt, 'prompt': value.prompt, 'tools': value.tools, 'threadId': value.thread_id, 'baseThreadId': value.base_thread_id, 'loadingV1': false, 'loadingV2': false})
                 })
             })
             setCreateSession(false)
@@ -78,7 +78,7 @@ export default function SessionContext() {
                     value.tools.forEach((tool: any) => {
                         toolsDescription[tool.name] = tool.description
                     })
-                    setSessionData(agent, {'selectedTools': value.tools.filter((tool: any) => tool.is_active).map((tool: any) => tool.name), 'toolsDescription': toolsDescription, 'basePrompt': value.base_prompt, 'prompt': value.prompt, 'tools': value.base_tools, 'threadId': value.thread_id, 'baseThreadId': value.base_thread_id})
+                    setSessionData(agent, {'selectedTools': value.tools.filter((tool: any) => tool.is_active).map((tool: any) => tool.name), 'toolsDescription': toolsDescription, 'basePrompt': value.base_prompt, 'prompt': value.prompt, 'tools': value.base_tools, 'threadId': value.thread_id, 'baseThreadId': value.base_thread_id, 'loadingV1': false, 'loadingV2': false})
                 })
             ])
         }

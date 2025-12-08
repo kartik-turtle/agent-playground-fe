@@ -36,10 +36,7 @@ const ChatInterface = (props: ChatInterfaceProps) => {
     const [messagesV1, setMessagesV1] = useState<Message[]>([]);
     const [messagesV2, setMessagesV2] = useState<Message[]>([]);
 
-    const [loadingV1, setLoadingV1] = useState(false);
-    const [loadingV2, setLoadingV2] = useState(false);
-
-    const {selectedAgent, sessionData, setNewBaseThreadChat, setNewThreadChat, setThreadIds, setUpdatePending} = useStore()
+    const {selectedAgent, sessionData, setNewBaseThreadChat, setNewThreadChat, setThreadIds, setUpdatePending, setLoadingV1, setLoadingV2} = useStore()
     console.log("state", useStore.getState())
 
 
@@ -95,8 +92,8 @@ const ChatInterface = (props: ChatInterfaceProps) => {
         setNewBaseThreadChat(selectedAgent, { ...userMessage, id: messageId + "-v1" })
         setNewThreadChat(selectedAgent, { ...userMessage, id: messageId + "-v2" })
 
-        setLoadingV1(true);
-        setLoadingV2(true);
+        setLoadingV1(selectedAgent, true)
+        setLoadingV2(selectedAgent, true)
 
         if (!sessionData![selectedAgent].threadId || !sessionData![selectedAgent].baseThreadId) {
             initializeThreads()?.then(resp => {
@@ -138,29 +135,19 @@ const ChatInterface = (props: ChatInterfaceProps) => {
 
     useEffect(() => {
         if (sessionData?.[selectedAgent]?.baseThreadChats) {
-            const chats = sessionData[selectedAgent].baseThreadChats
-            if (chats.length !== 0 && chats[chats.length - 1].role === 'assistant') {
-                setLoadingV1(false)
-            }
             setMessagesV1(sessionData[selectedAgent].baseThreadChats)
         }
         else {
-            setLoadingV1(false)
             setMessagesV1([])
         }
     }, [sessionData, selectedAgent])
 
     useEffect(() => {
         if(sessionData?.[selectedAgent]?.threadChats) {
-            const chats = sessionData[selectedAgent].threadChats
-            if (chats.length !== 0 && chats[chats.length - 1].role === 'assistant') {
-                setLoadingV2(false)
-            }
-            setMessagesV2(sessionData[selectedAgent].threadChats)
+          setMessagesV2(sessionData[selectedAgent].threadChats)
         }
         else {
-            setLoadingV2(false)
-            setMessagesV2([])
+          setMessagesV2([])
         }
     }, [sessionData, selectedAgent])
 
@@ -176,7 +163,7 @@ const ChatInterface = (props: ChatInterfaceProps) => {
               version="Prompt Version 1"
               messages={messagesV1}
               onSendMessage={() => {}}
-              isLoading={loadingV1}
+              isLoading={sessionData?.[selectedAgent]?.loadingV1 || false}
               isPromptEditable={false}
               hideInput={true}
             />
@@ -188,7 +175,7 @@ const ChatInterface = (props: ChatInterfaceProps) => {
               version="Prompt Version 2"
               messages={messagesV2}
               onSendMessage={() => {}}
-              isLoading={loadingV2}
+              isLoading={sessionData?.[selectedAgent]?.loadingV2 || false}
               isPromptEditable={true}
               hideInput={true}
             />
@@ -198,7 +185,7 @@ const ChatInterface = (props: ChatInterfaceProps) => {
         {/* Shared Chat Input */}
         <SharedChatInput
           onSendMessage={handleSharedMessage}
-          isLoading={loadingV1 || loadingV2}
+          isLoading={sessionData?.[selectedAgent]?.loadingV1 || sessionData?.[selectedAgent]?.loadingV2 || false}
         />
       </div>
     )

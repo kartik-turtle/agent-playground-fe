@@ -20,6 +20,8 @@ interface AgentState {
     baseThreadId: string | null
     threadChats?: Message[]
     baseThreadChats?: Message[]
+    loadingV1: boolean 
+    loadingV2: boolean
 }
 
 export interface SessionState {
@@ -54,8 +56,10 @@ interface StoreState {
     setThreadChats: (agent: string, threadChats: Message[], baseThreadChats: Message[]) => void
     setNewThreadChat: (agent: string, chat: Message) => void
     setNewBaseThreadChat: (agent: string, chat: Message) => void
-    setSessionData: (agent: string, data: AgentState) => void
+    setSessionData: (agent: string, data: Partial<AgentState> | AgentState) => void
     setSessionId: (sessionId: string) => void
+    setLoadingV1: (agent: string, value: boolean) => void
+    setLoadingV2: (agent: string, value: boolean) => void
     setWebSocketConnected: (value: boolean) => void
 }
 
@@ -87,7 +91,9 @@ export const useStore = create<StoreState>((set) => ({
     setThreadChats: (agent, threadChats, baseThreadChats) => set(state => ({sessionData: {...state.sessionData, [agent]: {...state.sessionData![agent], threadChats: threadChats, baseThreadChats: baseThreadChats}}})),
     setNewThreadChat: (agent, chat) => set((state) => ({sessionData: {...state.sessionData, [agent]: {...state.sessionData![agent], threadChats: [...(state.sessionData![agent].threadChats || []), chat]}}})),
     setNewBaseThreadChat: (agent, chat) => set((state) => ({sessionData: {...state.sessionData, [agent]: {...state.sessionData![agent], baseThreadChats: [...(state.sessionData![agent].baseThreadChats || []), chat]}}})),
-    setSessionData: (agent, data) => set((state) => ({sessionData: {...state.sessionData, [agent]: {...state.sessionData?.[agent], ...data}}})),
+    setSessionData: (agent, data) => set((state) => ({sessionData: {...state.sessionData, [agent]: {...state.sessionData?.[agent], ...(data as AgentState)}}})),
     setSessionId: (sessionId) => set({sessionId: sessionId}),
+    setLoadingV1: (agent, value) => set((state) => ({sessionData: {...state.sessionData, [agent]: {...state.sessionData![agent], loadingV1: value}}})),
+    setLoadingV2: (agent, value) => set((state) => ({sessionData: {...state.sessionData, [agent]: {...state.sessionData![agent], loadingV2: value}}})),
     setWebSocketConnected: (value) => set({webSocketConnected: value})
 }))

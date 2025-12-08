@@ -12,7 +12,7 @@ const subscribe = () => {
         return
     const topic = `/topic/${partnerDetails.id}`
     stompClient!.subscribe(topic, (message) => {
-        const {sessionData, selectedAgent, setNewThreadChat, setNewBaseThreadChat} = useStore.getState()
+        const {sessionData, setNewThreadChat, setNewBaseThreadChat, setLoadingV1, setLoadingV2} = useStore.getState()
         const webSocketMessage = JSON.parse(message.body)
         console.log("Received message over websocket: ", webSocketMessage)
         console.log("state", useStore.getState())
@@ -22,20 +22,29 @@ const subscribe = () => {
             const newMsg = webSocketMessage.newMessage?.messages?.[0];
             if (newMsg && newMsg.senderId !== partnerDetails.id) {
                 const threadId = webSocketMessage.threadInfo.id
-                if (sessionData?.[selectedAgent].baseThreadId === threadId) {
-                    const existingMsg = sessionData[selectedAgent].baseThreadChats?.find(message => message.id === newMsg.id)
-                    if (!existingMsg) {
-                        console.log("received agent response for base thread: ", existingMsg)
-                        formatChatMessage(newMsg).then(formattedMsg => setNewBaseThreadChat(selectedAgent, formattedMsg))
+                Object.entries(sessionData).forEach(([agent, data]) => {
+                    if (data.baseThreadId === threadId) {
+                        const existingMsg = sessionData[agent].baseThreadChats?.find(message => message.id === newMsg.id)
+                        if (!existingMsg) {
+                            console.log("received agent response for base thread: ", newMsg)
+                            formatChatMessage(newMsg).then(formattedMsg => {
+                                setLoadingV1(agent, false)
+                                setNewBaseThreadChat(agent, formattedMsg)
+                            })
+                        }
                     }
-                }
-                if (sessionData?.[selectedAgent].threadId === threadId) {
-                    const existingMsg = sessionData[selectedAgent].threadChats?.find(message => message.id === newMsg.id)
-                    if (!existingMsg) {
-                        console.log("received agent response for thread: ", existingMsg)
-                        formatChatMessage(newMsg).then(formattedMsg => setNewThreadChat(selectedAgent, formattedMsg))
+                    if (data.threadId === threadId) {
+                        const existingMsg = sessionData[agent].threadChats?.find(message => message.id === newMsg.id)
+                        if (!existingMsg) {
+                            console.log("received agent response for thread: ", newMsg)
+                            formatChatMessage(newMsg).then(formattedMsg => {
+                                setLoadingV2(agent, false)
+                                setNewThreadChat(agent, formattedMsg)
+                            })
+                        }
+
                     }
-                }
+                })
             }
         }
         else {

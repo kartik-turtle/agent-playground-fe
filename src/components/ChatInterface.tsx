@@ -7,25 +7,7 @@ import { initializeThreads } from "../services/threadService";
 import { sendMessage } from "../services/webSocketService";
 import apiService from "../services/apiService";
 import { APIBase, APIEndpoints, APIMethod } from "../constants/api-endpoints";
-
-
-interface FileAttachment {
-  id: string;
-  name: string;
-  size: number;
-  type: string;
-  url: string;
-}
-
-interface Message {
-  id: string;
-  role: "user" | "assistant" | "system";
-  content: string;
-  timestamp: string;
-  files?: FileAttachment[];
-  author?: string; // "user" for human messages, agent name for assistant messages
-}
-
+import { FileAttachment, Message } from "types/common-types";
 interface ChatInterfaceProps {
 
 }
@@ -192,4 +174,3 @@ const ChatInterface = (props: ChatInterfaceProps) => {
 }
 
 export default ChatInterface
-export {Message, FileAttachment}

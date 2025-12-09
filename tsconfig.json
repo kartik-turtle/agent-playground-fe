@@ -1,0 +1,14 @@
+{
+  "extends": "@turtlemint/reactpacker/tsconfigs/reactapp.non-strict.json",
+  "compilerOptions": {
+    "baseUrl": "src",
+    "checkJs": false
+  },
+  "include": ["./src/**/*"],
+  "exclude": [
+    "./src/**/*.stories.tsx",
+    "./src/**/*.test.tsx",
+    "node_modules",
+    "*.d.ts"
+  ]
+}

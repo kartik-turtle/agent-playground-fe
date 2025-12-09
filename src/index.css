@@ -1635,6 +1635,10 @@
     }
   }
 
+  .graph-renderer {
+    
+  }
+
   .group-data-\[disabled\=true\]\:pointer-events-none:is(:where(.group)[data-disabled="true"] *) {
     pointer-events: none;
   }

@@ -2,7 +2,7 @@ import {Client} from "@stomp/stompjs"
 import { useStore } from "./store"
 import { APIBase, APIEndpoints } from "../constants/api-endpoints"
 import { formatChatMessage } from "./threadService"
-import { Message } from "../components/ChatInterface"
+import { Message } from "../types/common-types"
 
 let stompClient: Client | null = null
 

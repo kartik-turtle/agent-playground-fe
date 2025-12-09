@@ -31,7 +31,7 @@ import {
   CollapsibleTrigger,
 } from "./ui/collapsible";
 import { useStore } from "../services/store";
-import { FileAttachment, Message } from "./ChatInterface";
+import { FileAttachment, Message } from "../types/common-types";
 import { APIBase, APIEndpoints } from "../constants/api-endpoints";
 import { fileDownload } from "../services/apiService";
 

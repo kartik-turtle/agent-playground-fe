@@ -48,16 +48,21 @@
           "vaul": "^1.1.2",
           "axios": "^1.13.2",
           "zustand": "^5.0.8",
-          "@stomp/stompjs": "^7.2.1"
+          "@stomp/stompjs": "^7.2.1",
+          "@turtlemint/reactpacker": "^1.0.1",
+          "@xyflow/react": "^12.10.0",
+          "dagre": "^0.8.5"
       },
       "devDependencies": {
           "@types/node": "^20.10.0",
           "@types/react": "^18.3.1",
+          "@types/dagre": "^0.7.53",
+          "@types/radix-ui": "",
           "@vitejs/plugin-react-swc": "^3.10.2",
           "vite": "6.3.5"
       },
       "scripts": {
-          "dev": "vite",
-          "build": "vite build"
+          "dev": "reactpacker dev",
+          "build": "reactpacker build"
       }
   }

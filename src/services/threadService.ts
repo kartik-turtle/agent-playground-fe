@@ -1,4 +1,4 @@
-import { Message } from "../components/ChatInterface"
+import { Message } from "../types/common-types"
 import AgentThreadClassificationMap from "../constants/agent-thread-mapping"
 import { APIBase, APIEndpoints, APIMethod } from "../constants/api-endpoints"
 import apiService from "./apiService"

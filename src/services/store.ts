@@ -1,5 +1,5 @@
 import {create} from "zustand"
-import { Message } from "../components/ChatInterface"
+import { Message } from "../types/common-types"
 
 interface Tool {
   name: string;

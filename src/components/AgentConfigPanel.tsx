@@ -11,6 +11,7 @@ import { ChevronDown, ChevronRight, Pencil } from "lucide-react";
 import { SessionState } from "../services/store"
 import { SaveTool, ToolEditDialog } from "./ToolEditDialog";
 import { Button } from "./ui/button";
+import GraphRenderer from "./ui/graph-renderer";
 
 interface Tool {
   name: string;
@@ -315,6 +316,11 @@ export function AgentConfigPanel(props: AgentConfigPanelProps) {
               })}
             </div>
           </ScrollArea>)}
+          {sessionData && (
+            <div className="graph-renderer">
+              <GraphRenderer agent={selectedAgent} data={sessionData}/>
+            </div>
+          )}
         </div>
       </div>
       <ToolEditDialog

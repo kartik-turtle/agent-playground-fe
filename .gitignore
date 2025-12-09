@@ -9,6 +9,8 @@
 .env*.local
 .env.*.local
 !*.env.example
+.env
+.npmrc
 
 # IDE and OS files
 .DS_Store

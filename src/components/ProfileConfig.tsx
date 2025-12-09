@@ -16,10 +16,7 @@ import { debounce, debouncePromise, getItemFromLocalStorage, removeItemFromLocal
 import apiService from "../services/apiService";
 import { APIBase, APIEndpoints, APIMethod } from "../constants/api-endpoints";
 
-interface ProfileConfigProps {
-}
-
-export function ProfileConfig(props: ProfileConfigProps) {
+export function ProfileConfig() {
   const [isExpanded, setIsExpanded] = useState(false);
   const [userProfileStr, setUserProfileStr] = useState<string>("{}")
   const [agentProfileStr, setAgentProfileStr] = useState<string>("{}")

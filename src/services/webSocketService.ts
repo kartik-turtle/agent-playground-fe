@@ -24,7 +24,7 @@ const subscribe = () => {
                 const threadId = webSocketMessage.threadInfo.id
                 Object.entries(sessionData).forEach(([agent, data]) => {
                     if (data.baseThreadId === threadId) {
-                        const existingMsg = sessionData[agent].baseThreadChats?.find(message => message.id === newMsg.id)
+                        const existingMsg = sessionData[agent]!.baseThreadChats?.find(message => message.id === newMsg.id)
                         if (!existingMsg) {
                             console.log("received agent response for base thread: ", newMsg)
                             formatChatMessage(newMsg).then(formattedMsg => {
@@ -34,7 +34,7 @@ const subscribe = () => {
                         }
                     }
                     if (data.threadId === threadId) {
-                        const existingMsg = sessionData[agent].threadChats?.find(message => message.id === newMsg.id)
+                        const existingMsg = sessionData[agent]!.threadChats?.find(message => message.id === newMsg.id)
                         if (!existingMsg) {
                             console.log("received agent response for thread: ", newMsg)
                             formatChatMessage(newMsg).then(formattedMsg => {
@@ -68,7 +68,7 @@ const connectToWebSocket = () => {
     stompClient = new Client({
         brokerURL: APIBase.MINTPRO + APIEndpoints.WEBSOCKET,
         onConnect: handleConnect,
-        onDisconnect: (frame) => {
+        onDisconnect: () => {
             console.log("Broker disconnected")
             setWebSocketConnected(false)
         },

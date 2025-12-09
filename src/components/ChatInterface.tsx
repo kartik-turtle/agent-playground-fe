@@ -8,12 +8,8 @@ import { sendMessage } from "../services/webSocketService";
 import apiService from "../services/apiService";
 import { APIBase, APIEndpoints, APIMethod } from "../constants/api-endpoints";
 import { FileAttachment, Message } from "types/common-types";
-interface ChatInterfaceProps {
 
-}
-
-
-const ChatInterface = (props: ChatInterfaceProps) => {
+const ChatInterface = () => {
 
     const [messagesV1, setMessagesV1] = useState<Message[]>([]);
     const [messagesV2, setMessagesV2] = useState<Message[]>([]);
@@ -31,7 +27,7 @@ const ChatInterface = (props: ChatInterfaceProps) => {
         })
         formData.append('file', filePart)
         formData.append('broker', 'turtlemint')
-        formData.append('threadId', sessionData![selectedAgent].baseThreadId!)
+        formData.append('threadId', sessionData![selectedAgent]!.baseThreadId!)
         return apiService(APIMethod.POST, APIBase.MINTPRO, APIEndpoints.UPLOAD_THREAD_FILE, formData)
       })
 
@@ -43,7 +39,7 @@ const ChatInterface = (props: ChatInterfaceProps) => {
         })
         formData.append('file', filePart)
         formData.append('broker', 'turtlemint')
-        formData.append('threadId', sessionData![selectedAgent].threadId!)
+        formData.append('threadId', sessionData![selectedAgent]!.threadId!)
         return apiService(APIMethod.POST, APIBase.MINTPRO, APIEndpoints.UPLOAD_THREAD_FILE, formData)
       })
 
@@ -66,7 +62,7 @@ const ChatInterface = (props: ChatInterfaceProps) => {
             role: isInternalNote ? "system" : "user",
             content,
             timestamp,
-            files,
+            files: files,
             author: "user",
         };
 
@@ -77,7 +73,7 @@ const ChatInterface = (props: ChatInterfaceProps) => {
         setLoadingV1(selectedAgent, true)
         setLoadingV2(selectedAgent, true)
 
-        if (!sessionData![selectedAgent].threadId || !sessionData![selectedAgent].baseThreadId) {
+        if (!sessionData![selectedAgent]!.threadId || !sessionData![selectedAgent]!.baseThreadId) {
             initializeThreads()?.then(resp => {
                 const [baseThreadDetails, threadDetails] = resp
                 setThreadIds(selectedAgent, threadDetails.data.threadId, baseThreadDetails.data.threadId)
@@ -85,13 +81,13 @@ const ChatInterface = (props: ChatInterfaceProps) => {
                 const {sessionData} = useStore.getState()
                 if (userMessage.files && userMessage.files.length !== 0) {
                   handleFileUpload(userMessage.files).then(([baseThreadFiles, threadFiles]) => {
-                    sendMessage({ ...userMessage, files: baseThreadFiles}, sessionData![selectedAgent].baseThreadId!)
-                    sendMessage({ ...userMessage, files: threadFiles}, sessionData![selectedAgent].threadId!)
+                    sendMessage({ ...userMessage, files: baseThreadFiles}, sessionData![selectedAgent]!.baseThreadId!)
+                    sendMessage({ ...userMessage, files: threadFiles}, sessionData![selectedAgent]!.threadId!)
                   })
                 }
                 else {
-                  sendMessage(userMessage, sessionData![selectedAgent].baseThreadId!)
-                  sendMessage(userMessage, sessionData![selectedAgent].threadId!)
+                  sendMessage(userMessage, sessionData![selectedAgent]!.baseThreadId!)
+                  sendMessage(userMessage, sessionData![selectedAgent]!.threadId!)
                 }
             })
             return
@@ -104,13 +100,13 @@ const ChatInterface = (props: ChatInterfaceProps) => {
 
         if (userMessage.files && userMessage.files.length !== 0) {
           handleFileUpload(userMessage.files).then(([baseThreadFiles, threadFiles]) => {
-            sendMessage({ ...userMessage, files: baseThreadFiles}, sessionData![selectedAgent].baseThreadId!)
-            sendMessage({ ...userMessage, files: threadFiles}, sessionData![selectedAgent].threadId!)
+            sendMessage({ ...userMessage, files: baseThreadFiles}, sessionData![selectedAgent]!.baseThreadId!)
+            sendMessage({ ...userMessage, files: threadFiles}, sessionData![selectedAgent]!.threadId!)
           })
         }
         else {
-          sendMessage(userMessage, sessionData![selectedAgent].baseThreadId)
-          sendMessage(userMessage, sessionData![selectedAgent].threadId)
+          sendMessage(userMessage, sessionData![selectedAgent]!.baseThreadId)
+          sendMessage(userMessage, sessionData![selectedAgent]!.threadId)
         }
 
     };

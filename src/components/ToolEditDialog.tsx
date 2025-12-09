@@ -48,8 +48,8 @@ export function ToolEditDialog({ tool, isOpen, onClose, onSave }: ToolEditDialog
       setV2Description(tool.description || "");
       if (tool.type === 'agent') {
           const state = useStore.getState()
-          setV1Prompt(state.sessionData![tool.name].basePrompt);
-          setV2Prompt(state.sessionData![tool.name].prompt);
+          setV1Prompt(state.sessionData![tool.name]!.basePrompt);
+          setV2Prompt(state.sessionData![tool.name]!.prompt);
       }
     }
   }, [tool]);

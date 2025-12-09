@@ -3,5 +3,5 @@
   import App from "./App";
   import "./index.css";
 
-  createRoot(document.getElementById("root")).render(<App />);
+  createRoot(document.getElementById("root") || new HTMLDivElement()).render(<App />);
   

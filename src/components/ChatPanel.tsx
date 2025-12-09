@@ -207,7 +207,7 @@ export function ChatPanel({
                           size="sm"
                           className="h-7 text-xs text-zinc-600 hover:text-zinc-900"
                           onClick={() => {
-                            setTempPrompt(sessionData ? sessionData[selectedAgent]?.prompt : "");
+                            setTempPrompt(sessionData ? sessionData[selectedAgent]?.prompt || "" : "");
                             setIsEditingPrompt(true);
                             setIsPromptExpanded(true);
                           }}

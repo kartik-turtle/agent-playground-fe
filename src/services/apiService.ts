@@ -42,9 +42,7 @@ const apiService = async (method: APIMethod, base_url: string, url: string, data
       status: error.response?.status,
       headers: error.response?.headers
     });
-
-    const errorMessage =
-      error.response?.data?.meta?.msg || "An error occurred. Please try again.";
+    
     //show error
     throw error;
   }

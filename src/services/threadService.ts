@@ -36,7 +36,7 @@ const createThread = (isUseSessionId: boolean = false) => {
 const initializeThreads = () => {
     const {selectedAgent, sessionData} = useStore.getState()
     if (sessionData?.[selectedAgent] && sessionData[selectedAgent].threadId && sessionData[selectedAgent].baseThreadId) {
-        return
+        return null
     }
     const baseThread = createThread()
     const thread = createThread(true)

@@ -1,8 +1,9 @@
 {
-  "extends": "@turtlemint/reactpacker/tsconfigs/reactapp.non-strict.json",
+  "extends": "@turtlemint/reactpacker/tsconfigs/reactapp.strict.json",
   "compilerOptions": {
     "baseUrl": "src",
-    "checkJs": false
+    "checkJs": false,
+    "exactOptionalPropertyTypes": false
   },
   "include": ["./src/**/*"],
   "exclude": [

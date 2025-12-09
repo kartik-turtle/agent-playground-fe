@@ -20,9 +20,6 @@ interface Tool {
   parent_id: string;
 }
 
-interface AgentConfigPanelProps {
-}
-
 interface ToolItemProps {
   tool: Tool;
   children?: Tool[];
@@ -63,7 +60,7 @@ function ToolItem({ tool, children = [], selectedTools, onToolToggle, onEditTool
 
   const getToolDescription = (agent: string, name: string) => {
     const state = useStore.getState()
-    return state.sessionData![agent].toolsDescription[name]
+    return state.sessionData![agent]!.toolsDescription[name]
   }
 
   return (
@@ -112,7 +109,7 @@ function ToolItem({ tool, children = [], selectedTools, onToolToggle, onEditTool
                 <Button
                   onClick={(e: any) => {
                     e.preventDefault();
-                    onEditTool({...tool, 'baseDescription': tool.description, 'description': getToolDescription(tool.parent_id, tool.name)});
+                    onEditTool({...tool, 'baseDescription': tool.description, 'description': getToolDescription(tool.parent_id, tool.name)!});
                   }}
                   variant="ghost"
                   size="sm"
@@ -153,7 +150,7 @@ function ToolItem({ tool, children = [], selectedTools, onToolToggle, onEditTool
 }
 
 
-export function AgentConfigPanel(props: AgentConfigPanelProps) {
+export function AgentConfigPanel() {
 
   const [selectedAgent, setSelectedAgent] = useState<string>("")
   const [selectedTools, setSelectedTools] = useState<string[]>([])
@@ -300,7 +297,7 @@ export function AgentConfigPanel(props: AgentConfigPanelProps) {
           {!isToolsCollapsed && (<ScrollArea className="flex-1 pb-6">
             <div className="space-y-1 pt-3" style={{maxHeight: 'calc(100vh - 285px)', overflowY: 'scroll'}}>
               {rootTools.map((tool) => {
-                const childTools = tool.type === 'agent' ? sessionData?.[tool.name].tools : []
+                const childTools = tool.type === 'agent' ? sessionData?.[tool.name]?.tools || [] : []
                 return (
                   <ToolItem
                     key={tool.name}

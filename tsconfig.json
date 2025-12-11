@@ -6,10 +6,5 @@
     "exactOptionalPropertyTypes": false
   },
   "include": ["./src/**/*"],
-  "exclude": [
-    "./src/**/*.stories.tsx",
-    "./src/**/*.test.tsx",
-    "node_modules",
-    "*.d.ts"
-  ]
+  "exclude": ["./src/**/*.stories.tsx", "./src/**/*.test.tsx", "node_modules", "*.d.ts"]
 }

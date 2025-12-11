@@ -1,8 +1,8 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico" />
+    <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
     <!--
@@ -20,27 +20,23 @@
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
     <script>
-      var ci = "0002312",
-        gemErrList = [];
-      window.addEventListener("error", function (r) {
+      var ci = '0002312',
+        gemErrList = []
+      window.addEventListener('error', function (r) {
         if (r.error) {
-          var e = {};
+          var e = {}
           try {
-            (e.m = r.message),
-              (e.f = r.filename.replace(/(\\r\\n|\\n|\\r)/gm, "")),
+            ;((e.m = r.message),
+              (e.f = r.filename.replace(/(\\r\\n|\\n|\\r)/gm, '')),
               (e.l = r.lineno),
               (e.c = r.colno),
               (e.s = r.error.stack),
-              gemErrList.push(e);
+              gemErrList.push(e))
           } catch (r) {}
         }
-      });
+      })
     </script>
-    <script
-      type="text/javascript"
-      async
-      src="https://cdn.epsilondelta.co/static/gemGen.js"
-    ></script>
+    <script type="text/javascript" async src="https://cdn.epsilondelta.co/static/gemGen.js"></script>
   </head>
 
   <body>

@@ -7,11 +7,11 @@ import { Badge } from './ui/badge'
 import { useEffect, useMemo, useState } from 'react'
 import { useStore } from '../services/store'
 import { debounce, getItemFromLocalStorage } from '../services/utils'
-import { ChevronDown, ChevronRight, Pencil } from 'lucide-react'
+import { ChevronDown, ChevronRight, Pencil, Network } from 'lucide-react'
 import { SessionState } from '../services/store'
 import { SaveTool, ToolEditDialog } from './ToolEditDialog'
 import { Button } from './ui/button'
-import GraphRenderer from './ui/graph-renderer'
+import { DependencyGraphDialog } from './DependencyGraphDialog'
 
 interface Tool {
   name: string
@@ -154,6 +154,7 @@ export function AgentConfigPanel() {
   const [editingTool, setEditingTool] = useState<(Tool & { baseDescription: string }) | null>(null)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [isToolsCollapsed, setIsToolsCollapsed] = useState(false)
+  const [isGraphDialogOpen, setIsGraphDialogOpen] = useState(false)
 
   const {
     setSelectedAgent: setSelectedAgentStore,
@@ -327,11 +328,17 @@ export function AgentConfigPanel() {
               </div>
             </ScrollArea>
           )}
-          {sessionData && (
-            <div className='graph-renderer'>
-              <GraphRenderer agent={selectedAgent} data={sessionData} />
-            </div>
-          )}
+          {/* Dependency Graph Button */}
+          <div className='border-t border-zinc-200 p-6'>
+            <Button
+              onClick={() => setIsGraphDialogOpen(true)}
+              variant='outline'
+              className='w-full border-zinc-200 hover:bg-zinc-50'
+            >
+              <Network className='h-4 w-4 mr-2' />
+              View Dependency Graph
+            </Button>
+          </div>
         </div>
       </div>
       <ToolEditDialog
@@ -339,6 +346,13 @@ export function AgentConfigPanel() {
         isOpen={isDialogOpen}
         onSave={handleSaveTool}
         onClose={() => setIsDialogOpen(false)}
+      />
+      <DependencyGraphDialog
+        sessionData={sessionData || {}}
+        selectedAgent={selectedAgent}
+        isOpen={isGraphDialogOpen}
+        onClose={() => setIsGraphDialogOpen(false)}
+        onEditTool={handleEditTool as any}
       />
     </>
   )

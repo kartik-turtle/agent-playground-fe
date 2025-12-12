@@ -151,6 +151,7 @@ const GraphRenderer: React.FC<{ data: SessionState; agent: string }> = ({ data, 
         maxZoom={1.8}
         zoomOnScroll
         panOnDrag
+        title=''
       >
         <Background color='#1b1f2a' gap={12} />
         <MiniMap />
